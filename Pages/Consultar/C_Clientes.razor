@@ -1,0 +1,49 @@
+@page "/C_Clientes"
+@inject ClientesBLL ClientesBLL
+
+
+<table class = "table table-bordered" > 
+
+<thead>
+
+    <tr>
+
+        <th>Cliente ID </th> 
+        <th>Nombre </th> 
+        <th>Telefono </th> 
+        <th>Celular </th> 
+        <th>Rnc </th> 
+        <th>Email </th> 
+        <th>Direccion </th> 
+        
+    </tr>
+
+ </thead>
+ <tbody>
+
+@foreach (var item in clientes){
+
+    <tr>
+
+        <td> @item.ClienteId</td>
+        <td> @item.Nombre</td> 
+        <td> @item.Telefono</td>
+        <td> @item.Celular</td>  
+        <td> @item.Rnc</td>  
+        <td> @item.Email</td>  
+        <td> @item.Direccion</td>    
+    ></tr>    
+}   
+
+    </tbody>
+</table>
+
+@code{
+
+     public List<Clientes> clientes { get; set; } = new List<Clientes>(); 
+        
+            protected override void OnInitialized()
+            {
+                clientes = ClientesBLL.Listar(c => true); 
+            }
+}

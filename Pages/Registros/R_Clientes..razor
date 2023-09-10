@@ -1,0 +1,135 @@
+@page "/R_Clientes"
+@inject ClientesBLL ClientesBLL
+
+<EditForm Model="cliente" OnValidSubmit="Guardar"> 
+    <DataAnnotationsValidator/>
+    <div class ="card">
+
+        <div class="card-header">
+            <h1>Registro de clientes</h1>
+        </div>
+
+    <div class="card-body">
+                <!-- Para el Id -->
+                <label class="form-label">Cliente Id</label>
+
+                <div id="inputId" class="input-group mb-3">
+                    <InputNumber @bind-Value="cliente.ClienteId" class="form-control"/>
+                    <div class="input-group-append">
+                    <button class="btn btn-info" type="button" @onclick= "Buscar" > <span class="oi oi-magnifying-glass"/></button>
+                </div>
+
+            </div>
+
+                <!-- Para el nombre -->
+            
+                <label class="form-label">Nombre</label>
+                <InputText @bind-Value="cliente.Nombre" class="form-control"/>
+                <ValidationMessage For="@(() => cliente.Nombre)" />
+
+                <!-- Para el telefono -->
+                <label class="form-label">Telefono</label>
+                <InputText @bind-Value="cliente.Telefono" class="form-control"/>
+                <ValidationMessage For="@(() => cliente.Telefono)" />
+
+                <!-- Para el celular -->
+                <label class="form-label">Celular</label>
+                <InputText @bind-Value="cliente.Celular" class="form-control"/>
+                <ValidationMessage For="@(() => cliente.Celular)" />
+
+                <!-- Para el Rnc -->
+                <label class="form-label">Rnc</label>
+                <InputText @bind-Value="cliente.Rnc" class="form-control"/>
+                <ValidationMessage For="@(() => cliente.Rnc)" />
+
+                <!-- Para el Email -->
+                <label class="form-label">Email</label>
+                <InputText @bind-Value="cliente.Email" class="form-control"/>
+                <ValidationMessage For="@(() => cliente.Email)" />
+
+                <!-- Para la direcion -->
+                <label class="form-label">Direccion</label>
+                <InputText @bind-Value="cliente.Direccion" class="form-control"/>
+                <ValidationMessage For="@(() => cliente.Direccion)" />
+
+
+        </div>
+
+        <div class="card-footer">
+                <button type="button" class="btn btn-primary"@onclick="New"><i class="oi oi-file" />Nuevo</button>
+                <button type="submit" class="btn btn-success" @onclick="Guardar"><i class="oi oi-document" />Guardar</button>
+                <button type="button" class="btn btn-danger"@onclick="Eliminar"><i class="oi oi-trash" />Eliminar</button>
+            </div>
+
+    </div>
+
+    
+
+</EditForm>
+
+@code{
+
+    public Clientes cliente {get; set; } = new Clientes();
+    void Guardar()
+    {
+        if(Validar())
+        {
+            if(ClientesBLL.Guardar(cliente))
+                New();
+        }
+    }
+
+    void Eliminar()
+    {
+        if (ClientesBLL.Eliminar(cliente)){
+            this.New();
+        }   
+    }
+    void New()
+    {
+        cliente = new Clientes();
+    }
+    bool Validar()
+    {
+        if((String.IsNullOrEmpty(cliente.Nombre) ))
+        {
+            return false;
+        }
+        else if((String.IsNullOrEmpty(cliente.Telefono))){
+            return false;
+        }
+        else if((String.IsNullOrEmpty(cliente.Celular))){
+            return false;
+        }
+        else if((String.IsNullOrEmpty(cliente.Rnc))){
+            return false;
+        }
+        else if((String.IsNullOrEmpty(cliente.Email))){
+            return false;
+        }
+        else if((String.IsNullOrEmpty(cliente.Direccion))){
+            return false;
+        }
+        else{
+            return true;
+        }
+        
+    }
+  void Buscar(){
+
+        var clienteEncontrado = ClientesBLL.Buscar(cliente.ClienteId);
+
+        if(clienteEncontrado != null)
+        {
+
+            this.cliente = clienteEncontrado; 
+        }
+    }
+
+    void ToUpperText(string value)
+    {
+        cliente.Direccion = value.ToUpper();
+    }
+
+
+}
